@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CoreLogic Technologies - About Us</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Styling khusus tabel gaya trader */
+        .trader-table-container {
+            overflow-x: auto;
+            background: rgba(5, 11, 20, 0.95);
+            border: 1px solid var(--neon-blue);
+            border-radius: 8px;
+            padding: 1rem;
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .trader-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: monospace;
+            font-size: 0.85rem;
+            text-align: right;
+        }
+        .trader-table th, .trader-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid rgba(0, 240, 255, 0.15);
+        }
+        .trader-table th {
+            color: var(--neon-blue);
+            background: rgba(0, 240, 255, 0.05);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: sticky;
+            top: 0;
+            z-index: 2;
+        }
+        .trader-table td:first-child, .trader-table th:first-child {
+            text-align: left;
+        }
+        .trend-up { color: #00ff66; text-shadow: 0 0 8px rgba(0,255,102,0.4); }
+        .trend-down { color: #ff0055; text-shadow: 0 0 8px rgba(255,0,85,0.4); }
+    </style>
+</head>
+<body class="page-transition">
+
+    <!-- Canvas Background Hacker & Chipset -->
+    <canvas id="cyberCanvas"></canvas>
+    <div class="chipset-overlay"></div>
+
+    <!-- Header / Navigasi -->
+    <header class="navbar">
+        <div class="logo-container">
+            <div class="logo-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="2" y="3" width="20" height="14" rx="2" />
+                    <line x1="8" y1="21" x2="16" y2="21" />
+                    <line x1="12" y1="17" x2="12" y2="21" />
+                </svg>
+            </div>
+            <div class="logo-text">
+                <span class="logo-core">CORE</span><span class="logo-logic">LOGIC</span>
+                <span class="logo-badge">TECH</span>
+            </div>
+        </div>
+        <button class="hamburger" id="hamburger" aria-label="Menu">&#9776;</button>
+        <nav class="nav-links" id="nav-links">
+            <a href="index.html" class="nav-item">Home</a>
+            <a href="about.html" class="nav-item active">About Us</a>
+        </nav>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="content-wrapper">
+        <section class="about-section">
+            <div class="container-fluid" style="padding: 0 4%;">
+                <h1 class="neon-heading">Tentang CoreLogic Technologies</h1>
+                <p class="lead" style="max-width: 900px; margin: 0 auto 1.5rem;">Penyedia komputasi dan laptop resmi terpercaya yang menghadirkan produk teknologi berkecepatan tinggi dengan garansi dan layanan terbaik.</p>
+                
+                <!-- Real-Time Clock Bar -->
+                <div class="realtime-clock-bar neon-card" style="text-align: center; padding: 0.8rem; margin-bottom: 2rem; border: 1px solid rgba(0,240,255,0.4);">
+                    <p style="color: #94a3b8; font-size: 0.95rem;">Status Sistem Real-Time: <span id="storeStatus" style="color: var(--neon-green); font-weight: bold;">Memuat...</span> | Waktu Sesi: <span id="liveClock" style="color: #fff; font-family: monospace; font-weight: bold;">--:--:--</span></p>
+                </div>
+
+                <!-- Tombol Navigasi Slide Informasi & Kotak Produk -->
+                <div class="slide-nav-container" style="display: flex; justify-content: center; gap: 8px; margin-bottom: 2.5rem; flex-wrap: wrap;">
+                    <button class="slide-btn active" data-target="slide-1">1. Lokasi Toko</button>
+                    <button class="slide-btn" data-target="slide-2">2. Terminal Pengguna</button>
+                    <button class="slide-btn" data-target="slide-3">3. Estimasi Stok</button>
+                    <button class="slide-btn" data-target="slide-4">4. Tren Harga & Rilis</button>
+                    <button class="slide-btn" data-target="catalog-view" style="border-color: var(--neon-green); color: var(--neon-green);">📦 5. Kotak Produk</button>
+                </div>
+
+                <!-- Container Area Slide dengan Animasi Geser ke Kanan -->
+                <div class="slides-viewport" style="position: relative; overflow: hidden; min-height: 320px; margin-bottom: 3rem;">
+                    
+                    <!-- SLIDE 1: Lokasi Toko & Cabang Toko -->
+                    <div class="about-slide-pane active" id="slide-1">
+                        <div class="neon-card" style="padding: 2.5rem;">
+                            <h2 style="color: var(--neon-blue); margin-bottom: 1.5rem; font-size: 1.5rem;">📍 Lokasi Toko Utama & Jaringan Cabang</h2>
+                            <div class="about-grid" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem;">
+                                <div style="background: rgba(0, 240, 255, 0.03); padding: 1.5rem; border-radius: 10px; border: 1px solid rgba(0,240,255,0.2);">
+                                    <h3 style="color: #fff; margin-bottom: 0.5rem; font-size: 1.1rem;">HQ Flagship Store (Jakarta)</h3>
+                                    <p style="color: #94a3b8; font-size: 0.9rem;">Jl. Cyber Sudirman No. 88, Zona Teknologi Lt. 2, Jakarta Selatan</p>
+                                    <span style="display: inline-block; margin-top: 10px; color: var(--neon-green); font-size: 0.85rem;">● Buka (09:00 - 21:00 WIB)</span>
+                                </div>
+                                <div style="background: rgba(0, 240, 255, 0.03); padding: 1.5rem; border-radius: 10px; border: 1px solid rgba(0,240,255,0.2);">
+                                    <h3 style="color: #fff; margin-bottom: 0.5rem; font-size: 1.1rem;">Cabang Surabaya</h3>
+                                    <p style="color: #94a3b8; font-size: 0.9rem;">Plaza Marina Lt. 2 Blok A-5, Jl. Margorejo Indah, Surabaya</p>
+                                    <span style="display: inline-block; margin-top: 10px; color: var(--neon-green); font-size: 0.85rem;">● Buka (10:00 - 22:00 WIB)</span>
+                                </div>
+                                <div style="background: rgba(0, 240, 255, 0.03); padding: 1.5rem; border-radius: 10px; border: 1px solid rgba(0,240,255,0.2);">
+                                    <h3 style="color: #fff; margin-bottom: 0.5rem; font-size: 1.1rem;">Cabang Bandung</h3>
+                                    <p style="color: #94a3b8; font-size: 0.9rem;">Bandung Electronic Center (BEC) Lt. 1 Blok Z-12, Bandung</p>
+                                    <span style="display: inline-block; margin-top: 10px; color: var(--neon-green); font-size: 0.85rem;">● Buka (10:00 - 20:00 WIB)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SLIDE 2: Terminal Trader Pengguna Laptop per Pulau -->
+                    <div class="about-slide-pane" id="slide-2" style="display: none;">
+                        <div class="neon-card" style="padding: 2.5rem;">
+                            <h2 style="color: var(--neon-blue); margin-bottom: 1rem; font-size: 1.5rem;">📈 Terminal Trader: Jumlah Pengguna Laptop di Indonesia</h2>
+                            <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 1.5rem;">Statistik populasi dan pertumbuhan pengguna aktif perangkat komputer/laptop di seluruh pulau utama:</p>
+                            
+                            <div class="trader-table-container">
+                                <table class="trader-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Wilayah / Pulau</th>
+                                            <th>Pengguna 2024</th>
+                                            <th>Pengguna 2025</th>
+                                            <th>Pengguna 2026 (Live)</th>
+                                            <th>Tren Pertumbuhan</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td style="color: #fff;">Pulau Jawa</td>
+                                            <td>14.250.000</td>
+                                            <td>15.800.000</td>
+                                            <td>17.450.000</td>
+                                            <td class="trend-up">+10.44% ▲</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="color: #fff;">Pulau Sumatera</td>
+                                            <td>5.120.000</td>
+                                            <td>5.700.000</td>
+                                            <td>6.350.000</td>
+                                            <td class="trend-up">+11.40% ▲</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="color: #fff;">Pulau Kalimantan</td>
+                                            <td>2.100.000</td>
+                                            <td>2.380.000</td>
+                                            <td>2.710.000</td>
+                                            <td class="trend-up">+13.86% ▲</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="color: #fff;">Pulau Sulawesi</td>
+                                            <td>1.850.000</td>
+                                            <td>2.050.000</td>
+                                            <td>2.300.000</td>
+                                            <td class="trend-up">+12.19% ▲</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="color: #fff;">Bali & Nusa Tenggara</td>
+                                            <td>1.200.000</td>
+                                            <td>1.340.000</td>
+                                            <td>1.520.000</td>
+                                            <td class="trend-up">+13.43% ▲</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="color: #fff;">Maluku & Papua</td>
+                                            <td>680.000</td>
+                                            <td>760.000</td>
+                                            <td>850.000</td>
+                                            <td class="trend-up">+11.84% ▲</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SLIDE 3: Estimasi Stok Barang Masing-Masing -->
+                    <div class="about-slide-pane" id="slide-3" style="display: none;">
+                        <div class="neon-card" style="padding: 2.5rem;">
+                            <h2 style="color: var(--neon-blue); margin-bottom: 1.5rem; font-size: 1.5rem;">📦 Estimasi Ketersediaan Stok Barang (Real-Time Warehouse)</h2>
+                            <div style="overflow-x: auto;">
+                                <table style="width: 100%; border-collapse: collapse; text-align: left; color: #94a3b8; font-size: 0.95rem;">
+                                   <thead>
+                                        <tr style="border-bottom: 1px solid rgba(0,240,255,0.3); color: #fff;">
+                                            <th style="padding: 12px;">No & Nama Produk</th>
+                                            <th style="padding: 12px;">Kategori</th>
+                                            <th style="padding: 12px;">Status Gudang Pusat</th>
+                                            <th style="padding: 12px;">Estimasi Stok</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);"><td style="padding: 10px; color: #fff;">#01 - ASUS ROG Strix SCAR 18</td><td style="padding: 10px;">Flagship Gaming</td><td style="padding: 10px; color: var(--neon-green);">Tersedia</td><td style="padding: 10px; font-weight: bold; color: #fff;">5 Unit</td></tr>
+                                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);"><td style="padding: 10px; color: #fff;">#02 - CoreBook Pro Ultra 14</td><td style="padding: 10px;">Business & Work</td><td style="padding: 10px; color: var(--neon-green);">Tersedia</td><td style="padding: 10px; font-weight: bold; color: #fff;">12 Unit</td></tr>
+                                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);"><td style="padding: 10px; color: #fff;">#03 - Lenovo Legion Pro 7i</td><td style="padding: 10px;">Creator Studio</td><td style="padding: 10px; color: #ff0055;">Stok Menipis</td><td style="padding: 10px; font-weight: bold; color: #fff;">2 Unit</td></tr>
+                                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);"><td style="padding: 10px; color: #fff;">#04 - MSI Raider GE78 HX</td><td style="padding: 10px;">Flagship Gaming</td><td style="padding: 10px; color: var(--neon-green);">Tersedia</td><td style="padding: 10px; font-weight: bold; color: #fff;">7 Unit</td></tr>
+                                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);"><td style="padding: 10px; color: #fff;">#05 - Dell XPS 16 Creator Edition</td><td style="padding: 10px;">Business & Work</td><td style="padding: 10px; color: var(--neon-green);">Tersedia</td><td style="padding: 10px; font-weight: bold; color: #fff;">4 Unit</td></tr>
+                                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);"><td style="padding: 10px; color: #fff;">#06 - Apple MacBook Pro 16 M3 Max</td><td style="padding: 10px;">Creator Studio</td><td style="padding: 10px; color: var(--neon-green);">Tersedia</td><td style="padding: 10px; font-weight: bold; color: #fff;">6 Unit</td></tr>
+                                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);"><td style="padding: 10px; color: #fff;">#07 - HP Spectre x360 2-in-1 14</td><td style="padding: 10px;">Business & Work</td><td style="padding: 10px; color: var(--neon-green);">Tersedia</td><td style="padding: 10px; font-weight: bold; color: #fff;">8 Unit</td></tr>
+                                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);"><td style="padding: 10px; color: #fff;">#08 - Acer Predator Helios 18</td><td style="padding: 10px;">Flagship Gaming</td><td style="padding: 10px; color: #ff0055;">Stok Menipis</td><td style="padding: 10px; font-weight: bold; color: #fff;">3 Unit</td></tr>
+                                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);"><td style="padding: 10px; color: #fff;">#09 - ASUS ProArt Studiobook 16 OLED</td><td style="padding: 10px;">Creator Studio</td><td style="padding: 10px; color: var(--neon-green);">Tersedia</td><td style="padding: 10px; font-weight: bold; color: #fff;">4 Unit</td></tr>
+                                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);"><td style="padding: 10px; color: #fff;">#10 - Lenovo ThinkPad X1 Carbon Gen 12</td><td style="padding: 10px;">Business & Work</td><td style="padding: 10px; color: var(--neon-green);">Tersedia</td><td style="padding: 10px; font-weight: bold; color: #fff;">10 Unit</td></tr>
+                                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);"><td style="padding: 10px; color: #fff;">#11 - Razer Blade 16 (2024)</td><td style="padding: 10px;">Flagship Gaming</td><td style="padding: 10px; color: #ff0055;">Stok Menipis</td><td style="padding: 10px; font-weight: bold; color: #fff;">2 Unit</td></tr>
+                                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);"><td style="padding: 10px; color: #fff;">#12 - Microsoft Surface Laptop 6</td><td style="padding: 10px;">Business & Work</td><td style="padding: 10px; color: var(--neon-green);">Tersedia</td><td style="padding: 10px; font-weight: bold; color: #fff;">9 Unit</td></tr>
+                                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);"><td style="padding: 10px; color: #fff;">#13 - ASUS ROG Zephyrus G16 OLED</td><td style="padding: 10px;">Creator Studio</td><td style="padding: 10px; color: var(--neon-green);">Tersedia</td><td style="padding: 10px; font-weight: bold; color: #fff;">5 Unit</td></tr>
+                                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);"><td style="padding: 10px; color: #fff;">#14 - LG Gram Pro 17</td><td style="padding: 10px;">Business & Work</td><td style="padding: 10px; color: var(--neon-green);">Tersedia</td><td style="padding: 10px; font-weight: bold; color: #fff;">6 Unit</td></tr>
+                                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);"><td style="padding: 10px; color: #fff;">#15 - Alienware m18 R2</td><td style="padding: 10px;">Flagship Gaming</td><td style="padding: 10px; color: #ff0055;">Stok Menipis</td><td style="padding: 10px; font-weight: bold; color: #fff;">1 Unit</td></tr>
+                                        <tr><td style="padding: 10px; color: #fff;">#16 - MSI Stealth 16 AI Studio</td><td style="padding: 10px;">Creator Studio</td><td style="padding: 10px; color: var(--neon-green);">Tersedia</td><td style="padding: 10px; font-weight: bold; color: #fff;">4 Unit</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SLIDE 4: Kenaikan/Penurunan Harga & Tahun Rilis (Produk 1 - 16) -->
+                    <div class="about-slide-pane" id="slide-4" style="display: none;">
+                        <div class="neon-card" style="padding: 2.5rem;">
+                            <h2 style="color: var(--neon-blue); margin-bottom: 1rem; font-size: 1.5rem;">📊 Terminal Tren Harga & Tahun Rilis (16 Produk)</h2>
+                            <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 1.5rem;">Informasi tahun rilis perdana beserta delta fluktuasi kenaikan/penurunan harga pasar:</p>
+                            
+                            <div class="trader-table-container">
+                                <table class="trader-table">
+                                    <thead>
+                                        <tr>
+                                            <th>No & Nama Produk</th>
+                                            <th>Tahun Rilis</th>
+                                            <th>Harga Awal Rilis</th>
+                                            <th>Harga Live (2026)</th>
+                                            <th>Fluktuasi Harga</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr><td style="color: #fff;">#01 - ASUS ROG Strix SCAR 18</td><td>2024</td><td>Rp 62.000.000</td><td>Rp 65.999.000</td><td class="trend-up">+6.45% ▲</td></tr>
+                                        <tr><td style="color: #fff;">#02 - CoreBook Pro Ultra 14</td><td>2024</td><td>Rp 17.000.000</td><td>Rp 18.500.000</td><td class="trend-up">+8.82% ▲</td></tr>
+                                        <tr><td style="color: #fff;">#03 - Lenovo Legion Pro 7i</td><td>2024</td><td>Rp 39.500.000</td><td>Rp 42.500.000</td><td class="trend-up">+7.59% ▲</td></tr>
+                                        <tr><td style="color: #fff;">#04 - MSI Raider GE78 HX</td><td>2024</td><td>Rp 46.500.000</td><td>Rp 49.999.000</td><td class="trend-up">+7.52% ▲</td></tr>
+                                        <tr><td style="color: #fff;">#05 - Dell XPS 16 Creator Edition</td><td>2024</td><td>Rp 35.500.000</td><td>Rp 38.999.000</td><td class="trend-up">+9.85% ▲</td></tr>
+                                        <tr><td style="color: #fff;">#06 - Apple MacBook Pro 16 M3 Max</td><td>2023</td><td>Rp 59.000.000</td><td>Rp 57.499.000</td><td class="trend-down">-2.54% ▼</td></tr>
+                                        <tr><td style="color: #fff;">#07 - HP Spectre x360 2-in-1 14</td><td>2024</td><td>Rp 21.000.000</td><td>Rp 22.999.000</td><td class="trend-up">+9.51% ▲</td></tr>
+                                        <tr><td style="color: #fff;">#08 - Acer Predator Helios 18</td><td>2024</td><td>Rp 45.000.000</td><td>Rp 48.000.000</td><td class="trend-up">+6.66% ▲</td></tr>
+                                        <tr><td style="color: #fff;">#09 - ASUS ProArt Studiobook 16 OLED</td><td>2023</td><td>Rp 46.000.000</td><td>Rp 44.500.000</td><td class="trend-down">-3.26% ▼</td></tr>
+                                        <tr><td style="color: #fff;">#10 - Lenovo ThinkPad X1 Carbon Gen 12</td><td>2024</td><td>Rp 24.500.000</td><td>Rp 26.500.000</td><td class="trend-up">+8.16% ▲</td></tr>
+                                        <tr><td style="color: #fff;">#11 - Razer Blade 16 (2024)</td><td>2024</td><td>Rp 65.000.000</td><td>Rp 68.500.000</td><td class="trend-up">+5.38% ▲</td></tr>
+                                        <tr><td style="color: #fff;">#12 - Microsoft Surface Laptop 6</td><td>2024</td><td>Rp 23.000.000</td><td>Rp 24.999.000</td><td class="trend-up">+8.69% ▲</td></tr>
+                                        <tr><td style="color: #fff;">#13 - ASUS ROG Zephyrus G16 OLED</td><td>2024</td><td>Rp 37.000.000</td><td>Rp 39.999.000</td><td class="trend-up">+8.10% ▲</td></tr>
+                                        <tr><td style="color: #fff;">#14 - LG Gram Pro 17</td><td>2024</td><td>Rp 25.999.000</td><td>Rp 27.999.000</td><td class="trend-up">+7.69% ▲</td></tr>
+                                        <tr><td style="color: #fff;">#15 - Alienware m18 R2</td><td>2024</td><td>Rp 69.000.000</td><td>Rp 72.000.000</td><td class="trend-up">+4.34% ▲</td></tr>
+                                        <tr><td style="color: #fff;">#16 - MSI Stealth 16 AI Studio</td><td>2024</td><td>Rp 42.500.000</td><td>Rp 45.999.000</td><td class="trend-up">+8.23% ▲</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Bagian Katalog Galeri Laptop dengan Filter (Lengkap #01 sampai #16) -->
+                <div class="catalog-in-about" id="productCatalogSection" style="margin-top: 2rem;">
+                    <h2 class="neon-heading">Galeri & Lini Produk Unggulan</h2>
+
+                    <!-- Tombol Quick Filter Kategori -->
+                    <div class="filter-container">
+                        <button class="filter-btn active" data-filter="all">Semua Produk</button>
+                        <button class="filter-btn" data-filter="flagship">Flagship Gaming</button>
+                        <button class="filter-btn" data-filter="business">Business & Work</button>
+                        <button class="filter-btn" data-filter="creator">Creator Studio</button>
+                    </div>
+
+                    <div class="card-grid">
+                        
+                        <!-- Laptop 1 -->
+                        <div class="card neon-card" data-category="flagship">
+                            <div class="card-image-wrapper">
+                                <span class="product-number-badge">#01</span>
+                                <img src="https://images.unsplash.com/photo-1603302576837-37561b2e2302?auto=format&fit=crop&w=800&q=80" alt="ASUS ROG Strix SCAR 18" class="product-img">
+                                <span class="card-badge badge-flagship">Flagship Gaming</span>
+                            </div>
+                            <div class="card-body">
+                                <h3>ASUS ROG Strix SCAR 18 (2024)</h3>
+                                <p class="product-desc">Laptop gaming monster kelas premium ditenagai Intel Core i9 & RTX 4090 untuk gamer profesional dan kreator ekstrem.</p>
+                                <div class="specs-list">
+                                    <span>⚡ i9-14900HX</span>
+                                    <span>🎮 RTX 4090</span>
+                                    <span>🖥️ 18" QHD+ 240Hz</span>
+                                </div>
+                                <button class="btn-card" data-title="ASUS ROG Strix SCAR 18 (2024)" data-price="Rp 65.999.000" data-specs="Prosesor: Intel Core i9-14900HX | GPU: NVIDIA RTX 4090 16GB | RAM: 32GB DDR5 | Storage: 2TB NVMe SSD | Layar: 18 inci QHD+ 240Hz">Detail Produk</button>
+                            </div>
+                        </div>
+
+                        <!-- Laptop 2 -->
+                        <div class="card neon-card" data-category="business">
+                            <div class="card-image-wrapper">
+                                <span class="product-number-badge">#02</span>
+                                <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=800&q=80" alt="CoreBook Pro Ultra 14" class="product-img">
+                                <span class="card-badge badge-business">Business & Work</span>
+                            </div>
+                            <div class="card-body">
+                                <h3>CoreBook Pro Ultra 14</h3>
+                                <p class="product-desc">Laptop ultra-portable dengan bodi aluminium tipis dan ringan untuk efisiensi eksekutif bisnis dan programmer.</p>
+                                <div class="specs-list">
+                                    <span>⚡ Intel Ultra 7</span>
+                                    <span>🔋 18 Jam</span>
+                                    <span>🖥️ 14" OLED 2.8K</span>
+                                </div>
+                                <button class="btn-card" data-title="CoreBook Pro Ultra 14" data-price="Rp 18.500.000" data-specs="Prosesor: Intel Core Ultra 7 155H | GPU: Intel Arc | RAM: 16GB LPDDR5x | Storage: 1TB NVMe SSD | Layar: 14 inci OLED 2.8K">Detail Produk</button>
+                            </div>
+                        </div>
+
+                        <!-- Laptop 3 -->
+                        <div class="card neon-card" data-category="creator">
+                            <div class="card-image-wrapper">
+                                <span class="product-number-badge">#03</span>
+                                <img src="https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?auto=format&fit=crop&w=800&q=80" alt="Lenovo Legion Pro 7i" class="product-img">
+                                <span class="card-badge badge-creator">Creator Studio</span>
+                            </div>
+                            <div class="card-body">
+                                <h3>Lenovo Legion Pro 7i (2024)</h3>
+                                <p class="product-desc">Laptop berperforma tinggi memadukan chip AI khusus untuk optimalisasi rendering video 4K dan 3D modeling.</p>
+                                <div class="specs-list">
+                                    <span>⚡ i9-14900HX</span>
+                                    <span>🎮 RTX 4080</span>
+                                    <span>🖥️ 16" WQXGA</span>
+                                </div>
+                                <button class="btn-card" data-title="Lenovo Legion Pro 7i (2024)" data-price="Rp 42.500.000" data-specs="Prosesor: Intel Core i9-14900HX | GPU: NVIDIA RTX 4080 12GB | RAM: 32GB DDR5 | Storage: 1TB SSD | Layar: 16 inci 240Hz">Detail Produk</button>
+                            </div>
+                        </div>
+
+                        <!-- Laptop 4 -->
+                        <div class="card neon-card" data-category="flagship">
+                            <div class="card-image-wrapper">
+                                <span class="product-number-badge">#04</span>
+                                <img src="https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&fit=crop&w=800&q=80" alt="MSI Raider GE78 HX" class="product-img">
+                                <span class="card-badge badge-flagship">Flagship Gaming</span>
+                            </div>
+                            <div class="card-body">
+                                <h3>MSI Raider GE78 HX 14V</h3>
+                                <p class="product-desc">Kekuatan komputasi mutlak dengan sistem pendingin Cooler Boost 5 untuk performa gaming tanpa batas.</p>
+                                <div class="specs-list">
+                                    <span>⚡ i9-14900HX</span>
+                                    <span>🎮 RTX 4070</span>
+                                    <span>🖥️ 17" QHD+ 240Hz</span>
+                                </div>
+                                <button class="btn-card" data-title="MSI Raider GE78 HX 14V" data-price="Rp 49.999.000" data-specs="Prosesor: Intel Core i9-14900HX | GPU: RTX 4070 8GB | RAM: 32GB | Storage: 1TB NVMe | Layar: 17.3 inci QHD+">Detail Produk</button>
+                            </div>
+                        </div>
+
+                        <!-- Laptop 5 -->
+                        <div class="card neon-card" data-category="business">
+                            <div class="card-image-wrapper">
+                                <span class="product-number-badge">#05</span>
+                                <img src="https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=800&q=80" alt="Dell XPS 16" class="product-img">
+                                <span class="card-badge badge-business">Business & Work</span>
+                            </div>
+                            <div class="card-body">
+                                <h3>Dell XPS 16 Creator Edition</h3>
+                                <p class="product-desc">Desain futuristik berbahan CNC machined aluminum dengan layar InfinityEdge yang sangat memukau.</p>
+                                <div class="specs-list">
+                                    <span>⚡ Core Ultra 9</span>
+                                    <span>🎮 RTX 4060</span>
+                                    <span>🖥️ 16" OLED 4K</span>
+                                </div>
+                                <button class="btn-card" data-title="Dell XPS 16 Creator Edition" data-price="Rp 38.999.000" data-specs="Prosesor: Intel Core Ultra 9 185H | GPU: RTX 4060 | RAM: 32GB LPDDR5x | Storage: 1TB SSD | Layar: 16 UHD+ OLED">Detail Produk</button>
+                            </div>
+                        </div>
+
+                        <!-- Laptop 6 -->
+                        <div class="card neon-card" data-category="creator">
+                            <div class="card-image-wrapper">
+                                <span class="product-number-badge">#06</span>
+                                <img src="https://images.unsplash.com/photo-1541807084-5c52b6b3adef?auto=format&fit=crop&w=800&q=80" alt="Apple MacBook Pro 16 M3 Max" class="product-img">
+                                <span class="card-badge badge-creator">Creator Studio</span>
+                            </div>
+                            <div class="card-body">
+                                <h3>Apple MacBook Pro 16 M3 Max</h3>
+                                <p class="product-desc">Standar emas industri kreatif profesional dengan chip Apple M3 Max dan efisiensi daya baterai luar biasa.</p>
+                                <div class="specs-list">
+                                    <span>⚡ Apple M3 Max</span>
+                                    <span>🎮 40-core GPU</span>
+                                    <span>🖥️ 16.2" Liquid Retina</span>
+                                </div>
+                                <button class="btn-card" data-title="Apple MacBook Pro 16 M3 Max" data-price="Rp 57.499.000" data-specs="Prosesor: Apple M3 Max (16-core CPU) | GPU: 40-core GPU | RAM: 36GB Unified | Storage: 1TB SSD | Layar: 16.2 XDR">Detail Produk</button>
+                            </div>
+                        </div>
+
+                        <!-- Laptop 7 -->
+                        <div class="card neon-card" data-category="business">
+                            <div class="card-image-wrapper">
+                                <span class="product-number-badge">#07</span>
+                                <img src="https://images.unsplash.com/photo-1588718882764-f24bc5c0834c?auto=format&fit=crop&w=800&q=80" alt="HP Spectre x360" class="product-img">
+                                <span class="card-badge badge-business">Business & Work</span>
+                            </div>
+                            <div class="card-body">
+                                <h3>HP Spectre x360 2-in-1 14</h3>
+                                <p class="product-desc">Laptop konvertibel fleksibel dengan engsel 360 derajat dan dukungan stylus aktif untuk mobilitas tinggi.</p>
+                                <div class="specs-list">
+                                    <span>⚡ Intel Ultra 7</span>
+                                    <span>🔋 Touchscreen</span>
+                                    <span>🖥️ 14" 2.8K OLED</span>
+                                </div>
+                                <button class="btn-card" data-title="HP Spectre x360 2-in-1 14" data-price="Rp 22.999.000" data-specs="Prosesor: Intel Core Ultra 7 | RAM: 16GB | Storage: 1TB SSD | Layar: 14 OLED Touch">Detail Produk</button>
+                            </div>
+                        </div>
+
+                        <!-- Laptop 8 -->
+                        <div class="card neon-card" data-category="flagship">
+                            <div class="card-image-wrapper">
+                                <span class="product-number-badge">#08</span>
+                                <img src="https://images.unsplash.com/photo-1593642632823-8f785ba67e45?auto=format&fit=crop&w=800&q=80" alt="Acer Predator Helios 18" class="product-img">
+                                <span class="card-badge badge-flagship">Flagship Gaming</span>
+                            </div>
+                            <div class="card-body">
+                                <h3>Acer Predator Helios 18</h3>
+                                <p class="product-desc">Visual luas dan nyata dengan teknologi kipas 3D AeroBlade generasi ke-5 untuk pendinginan optimal.</p>
+                                <div class="specs-list">
+                                    <span>⚡ i9-14900HX</span>
+                                    <span>🎮 RTX 4080</span>
+                                    <span>🖥️ 18" WQXGA 250Hz</span>
+                                </div>
+                                <button class="btn-card" data-title="Acer Predator Helios 18" data-price="Rp 48.000.000" data-specs="Prosesor: i9-14900HX | GPU: RTX 4080 12GB | RAM: 32GB | Storage: 2TB SSD | Layar: 18 250Hz">Detail Produk</button>
+                            </div>
+                        </div>
+
+                        <!-- Laptop 9 -->
+                        <div class="card neon-card" data-category="creator">
+                            <div class="card-image-wrapper">
+                                <span class="product-number-badge">#09</span>
+                                <img src="https://images.unsplash.com/photo-1515255557964-57b1563f1778?auto=format&fit=crop&w=800&q=80" alt="ASUS ProArt Studiobook 16" class="product-img">
+                                <span class="card-badge badge-creator">Creator Studio</span>
+                            </div>
+                            <div class="card-body">
+                                <h3>ASUS ProArt Studiobook 16 OLED</h3>
+                                <p class="product-desc">Dilengkapi ASUS Dial fisik untuk kontrol presisi tinggi di aplikasi Adobe Premiere, Photoshop, dan Blender.</p>
+                                <div class="specs-list">
+                                    <span>⚡ i9-13980HX</span>
+                                    <span>🎮 RTX 4070</span>
+                                    <span>🖥️ 16" 3.2K 120Hz</span>
+                                </div>
+                                <button class="btn-card" data-title="ASUS ProArt Studiobook 16 OLED" data-price="Rp 44.500.000" data-specs="Prosesor: i9-13980HX | GPU: RTX 4070 | RAM: 32GB | Storage: 1TB SSD | Fitur: ASUS Dial">Detail Produk</button>
+                            </div>
+                        </div>
+
+                        <!-- Laptop 10 -->
+                        <div class="card neon-card" data-category="business">
+                            <div class="card-image-wrapper">
+                                <span class="product-number-badge">#10</span>
+                                <img src="https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=800&q=80" alt="Lenovo ThinkPad X1 Carbon Gen 12" class="product-img">
+                                <span class="card-badge badge-business">Business & Work</span>
+                            </div>
+                            <div class="card-body">
+                                <h3>Lenovo ThinkPad X1 Carbon Gen 12</h3>
+                                <p class="product-desc">Legenda laptop bisnis dengan durabilitas militer, keyboard paling nyaman di kelasnya, dan keamanan tingkat enterprise.</p>
+                                <div class="specs-list">
+                                    <span>⚡ Core Ultra 7</span>
+                                    <span>🔋 Ultra Ringan</span>
+                                    <span>🖥️ 14" WUXGA OLED</span>
+                                </div>
+                                <button class="btn-card" data-title="Lenovo ThinkPad X1 Carbon Gen 12" data-price="Rp 26.500.000" data-specs="Prosesor: Intel Core Ultra 7 | RAM: 32GB LPDDR5x | Storage: 1TB SSD | Berat: 1.09 kg">Detail Produk</button>
+                            </div>
+                        </div>
+
+                        <!-- Laptop 11 -->
+                        <div class="card neon-card" data-category="flagship">
+                            <div class="card-image-wrapper">
+                                <span class="product-number-badge">#11</span>
+                                <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=800&q=80" alt="Razer Blade 16" class="product-img">
+                                <span class="card-badge badge-flagship">Flagship Gaming</span>
+                            </div>
+                            <div class="card-body">
+                                <h3>Razer Blade 16 (2024)</h3>
+                                <p class="product-desc">Laptop gaming berbalut bodi CNC unibody aluminium hitam khas kelas premium dengan layar Dual-Mode pertama di dunia.</p>
+                                <div class="specs-list">
+                                    <span>⚡ i9-14900HX</span>
+                                    <span>🎮 RTX 4090</span>
+                                    <span>🖥️ Dual UHD+/FHD+</span>
+                                </div>
+                                <button class="btn-card" data-title="Razer Blade 16 (2024)" data-price="Rp 68.500.000" data-specs="Prosesor: Intel Core i9-14900HX | GPU: RTX 4090 16GB | RAM: 32GB | Storage: 2TB SSD">Detail Produk</button>
+                            </div>
+                        </div>
+
+                        <!-- Laptop 12 -->
+                        <div class="card neon-card" data-category="business">
+                            <div class="card-image-wrapper">
+                                <span class="product-number-badge">#12</span>
+                                <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=800&q=80" alt="Microsoft Surface Laptop 6" class="product-img">
+                                <span class="card-badge badge-business">Business & Work</span>
+                            </div>
+                            <div class="card-body">
+                                <h3>Microsoft Surface Laptop 6</h3>
+                                <p class="product-desc">Laptop profesional elegan dengan layar sentuh PixelSense beresolusi tinggi dan integrasi penuh ekosistem Windows Copilot+.</p>
+                                <div class="specs-list">
+                                    <span>⚡ Intel Core Ultra 7</span>
+                                    <span>🔋 AI Integrated</span>
+                                    <span>🖥️ 13.5" PixelSense</span>
+                                </div>
+                                <button class="btn-card" data-title="Microsoft Surface Laptop 6" data-price="Rp 24.999.000" data-specs="Prosesor: Intel Core Ultra 7 165H | RAM: 16GB | Storage: 512GB SSD | Layar: Touchscreen">Detail Produk</button>
+                            </div>
+                        </div>
+
+                        <!-- Laptop 13 -->
+                        <div class="card neon-card" data-category="creator">
+                            <div class="card-image-wrapper">
+                                <span class="product-number-badge">#13</span>
+                                <img src="https://images.unsplash.com/photo-1537498425277-c283d32ef9db?auto=format&fit=crop&w=800&q=80" alt="ASUS ROG Zephyrus G16" class="product-img">
+                                <span class="card-badge badge-creator">Creator Studio</span>
+                            </div>
+                            <div class="card-body">
+                                <h3>ASUS ROG Zephyrus G16 OLED</h3>
+                                <p class="product-desc">Tipis, ringan, dan elegan. Menggabungkan performa kreator dan mobile gaming dalam bodi setipis 1.49 cm.</p>
+                                <div class="specs-list">
+                                    <span>⚡ Intel Core Ultra 9</span>
+                                    <span>🎮 RTX 4070</span>
+                                    <span>🖥️ 16" OLED 2.5K 240Hz</span>
+                                </div>
+                                <button class="btn-card" data-title="ASUS ROG Zephyrus G16 OLED" data-price="Rp 39.999.000" data-specs="Prosesor: Intel Core Ultra 9 185H | GPU: RTX 4070 | RAM: 32GB LPDDR5x | Storage: 1TB SSD">Detail Produk</button>
+                            </div>
+                        </div>
+
+                        <!-- Laptop 14 -->
+                        <div class="card neon-card" data-category="business">
+                            <div class="card-image-wrapper">
+                                <span class="product-number-badge">#14</span>
+                                <img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=800&q=80" alt="LG Gram Pro 17" class="product-img">
+                                <span class="card-badge badge-business">Business & Work</span>
+                            </div>
+                            <div class="card-body">
+                                <h3>LG Gram Pro 17</h3>
+                                <p class="product-desc">Laptop layar raksasa 17 inci dengan bobot super ringan di bawah 1.3 kg, sangat ideal untuk pebisnis yang dinamis.</p>
+                                <div class="specs-list">
+                                    <span>⚡ Intel Ultra 7</span>
+                                    <span>🔋 1.3 Kg Only</span>
+                                    <span>🖥️ 17" WQXGA IPS</span>
+                                </div>
+                                <button class="btn-card" data-title="LG Gram Pro 17" data-price="Rp 27.999.000" data-specs="Prosesor: Intel Core Ultra 7 | RAM: 16GB | Storage: 1TB NVMe | Berat: 1.32 kg">Detail Produk</button>
+                            </div>
+                        </div>
+
+                        <!-- Laptop 15 -->
+                        <div class="card neon-card" data-category="flagship">
+                            <div class="card-image-wrapper">
+                                <span class="product-number-badge">#15</span>
+                                <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=800&q=80" alt="Alienware m18 R2" class="product-img">
+                                <span class="card-badge badge-flagship">Flagship Gaming</span>
+                            </div>
+                            <div class="card-body">
+                                <h3>Alienware m18 R2</h3>
+                                <p class="product-desc">Monster desktop replacement berperforma buas dengan pendingin Element 31 Gallium-Silicone liquid metal.</p>
+                                <div class="specs-list">
+                                    <span>⚡ i9-14900HX</span>
+                                    <span>🎮 RTX 4090</span>
+                                    <span>🖥️ 18" FHD+ 480Hz</span>
+                                </div>
+                                <button class="btn-card" data-title="Alienware m18 R2" data-price="Rp 72.000.000" data-specs="Prosesor: Intel Core i9-14900HX | GPU: NVIDIA RTX 4090 16GB | RAM: 64GB DDR5 | Storage: 4TB RAID 0">Detail Produk</button>
+                            </div>
+                        </div>
+
+                        <!-- Laptop 16 -->
+                        <div class="card neon-card" data-category="creator">
+                            <div class="card-image-wrapper">
+                                <span class="product-number-badge">#16</span>
+                                <img src="https://images.unsplash.com/photo-1526738549149-8e07eca6c147?auto=format&fit=crop&w=800&q=80" alt="MSI Stealth 16 AI Studio" class="product-img">
+                                <span class="card-badge badge-creator">Creator Studio</span>
+                            </div>
+                            <div class="card-body">
+                                <h3>MSI Stealth 16 AI Studio</h3>
+                                <p class="product-desc">Memadukan estetika profesional warna Star Blue murni dengan tenaga prosesor berakselerasi AI untuk kreator konten.</p>
+                                <div class="specs-list">
+                                    <span>⚡ Core Ultra 9</span>
+                                    <span>🎮 RTX 4080</span>
+                                    <span>🖥️ 16" UHD+ Mini LED</span>
+                                </div>
+                                <button class="btn-card" data-title="MSI Stealth 16 AI Studio" data-price="Rp 45.999.000" data-specs="Prosesor: Intel Core Ultra 9 185H | GPU: RTX 4080 12GB | RAM: 32GB | Storage: 2TB SSD">Detail Produk</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Modal Popup Detail Spesifikasi Produk -->
+        <div class="modal-overlay" id="productModal">
+            <div class="modal-content neon-card">
+                <button class="modal-close" id="modalClose">&times;</button>
+                <div class="modal-header-tag">Spesifikasi Resmi</div>
+                <h2 id="modalTitle">Judul Laptop</h2>
+                <div class="modal-price" id="modalPrice">Rp 0</div>
+                <p class="modal-desc-title">Detail Spesifikasi Hardware:</p>
+                <p id="modalSpecs">Deskripsi lengkap spesifikasi...</p>
+                <button class="btn-neon modal-action-btn" id="modalActionBtn">Pesan via WhatsApp</button>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <div class="footer-logo">
+                <div class="logo-icon small">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="2" y="3" width="20" height="14" rx="2" />
+                        <line x1="8" y1="21" x2="16" y2="21" />
+                        <line x1="12" y1="17" x2="12" y2="21" />
+                    </svg>
+                </div>
+                <span>CORELOGIC TECHNOLOGIES</span>
+            </div>
+            <p>&copy; 2026 <span class="text-neon">CoreLogic Technologies</span>. All rights reserved.</p>
+        </footer>
+    </main>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const slideBtns = document.querySelectorAll('.slide-btn');
+            const slidePanes = document.querySelectorAll('.about-slide-pane');
+            const catalogSection = document.getElementById('productCatalogSection');
+
+            if (slideBtns.length > 0) {
+                slideBtns.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        slideBtns.forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+
+                        const targetId = btn.getAttribute('data-target');
+
+                        // Jika tombol "Kembali ke Kotak Produk" diklik
+                        if (targetId === 'catalog-view') {
+                            slidePanes.forEach(pane => {
+                                pane.style.display = 'none';
+                                pane.classList.remove('active');
+                            });
+                            if (catalogSection) {
+                                catalogSection.style.display = 'block';
+                            }
+                            return;
+                        }
+
+                        // Jika tombol slide informasi (1, 2, 3, atau 4) diklik
+                        slidePanes.forEach(pane => {
+                            if (pane.id === targetId) {
+                                pane.style.display = 'block';
+                                pane.classList.add('active');
+                            } else {
+                                pane.style.display = 'none';
+                                pane.classList.remove('active');
+                            }
+                        });
+
+                        // Sembunyikan kotak produk saat melihat slide informasi
+                        if (catalogSection) {
+                            catalogSection.style.display = 'none';
+                        }
+                    });
+                });
+            }
+
+            function updateLiveClock() {
+                const clockElement = document.getElementById('liveClock');
+                const statusElement = document.getElementById('storeStatus');
+                if (!clockElement) return;
+
+                const now = new Date();
+                const hours = now.getHours();
+                const minutes = String(now.getMinutes()).padStart(2, '0');
+                const seconds = String(now.getSeconds()).padStart(2, '0');
+                
+                clockElement.textContent = `${now.toLocaleDateString('id-ID', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })} - ${hours}:${minutes}:${seconds} WIB`;
+
+                if (hours >= 9 && hours < 21) {
+                    statusElement.textContent = "Buka (Layanan Aktif)";
+                    statusElement.style.color = "var(--neon-green)";
+                } else {
+                    statusElement.textContent = "Tutup (Online Order Only)";
+                    statusElement.style.color = "#ff0055";
+                }
+            }
+            
+            setInterval(updateLiveClock, 1000);
+            updateLiveClock();
+        });
+    </script>
+</body>
+</html>
